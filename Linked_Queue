@@ -1,0 +1,83 @@
+#include <iostream>
+
+// Define a node structure for the linked list
+struct Node {
+    int data;
+    Node* next;
+    
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Define the Queue class
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() : front(nullptr), rear(nullptr) {}
+
+    // Method to add a value to the back of the queue
+    void enqueue(int value) {
+        Node* newNode = new Node(value);
+        if (isEmpty()) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+    }
+
+    // Method to remove an element from the front of the queue and return its value
+    int dequeue() {
+        if (isEmpty()) {
+            std::cerr << "Queue is empty. Cannot dequeue.\n";
+            return -1; // Assuming -1 represents an error or an invalid value
+        } else {
+            int value = front->data;
+            Node* temp = front;
+            front = front->next;
+            delete temp;
+            return value;
+        }
+    }
+
+    // Method to check if the queue is empty
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    // Optionally, a method to peek at the value at the front of the queue without removing it
+    int peek() {
+        if (isEmpty()) {
+            std::cerr << "Queue is empty. Cannot peek.\n";
+            return -1; // Assuming -1 represents an error or an invalid value
+        } else {
+            return front->data;
+        }
+    }
+};
+
+int main() {
+    Queue q;
+
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+
+    std::cout << "Peek: " << q.peek() << std::endl; // Peek at the front element
+
+    std::cout << "Dequeue: " << q.dequeue() << std::endl;
+    std::cout << "Dequeue: " << q.dequeue() << std::endl;
+
+    std::cout << "Peek: " << q.peek() << std::endl; // Peek at the front element again after dequeueing
+
+    q.enqueue(40);
+
+    std::cout << "Dequeue: " << q.dequeue() << std::endl;
+    std::cout << "Dequeue: " << q.dequeue() << std::endl;
+
+    std::cout << "Is Queue Empty? " << (q.isEmpty() ? "Yes" : "No") << std::endl;
+
+    return 0;
+}
